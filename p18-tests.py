@@ -7,12 +7,14 @@ Created on Mon Nov 25 20:33:08 2019
 
 import unittest
 
+import numpy as np
 
-class TestCollatzLength(unittest.TestCase):
+
+class TestTriangleMaximum(unittest.TestCase):
     
     def setUp(self):
-        self.N_to_W = NumberToWords()
-    
+        pass
+        
     def test_something(self):
         pass
 
