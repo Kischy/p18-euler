@@ -18,7 +18,8 @@ tm = TM()
 tm.import_triangle("the_triangle.txt")
 
 
-
+for i in range(7,5,-1):
+    print(i)
 
 the_answer = 0
 

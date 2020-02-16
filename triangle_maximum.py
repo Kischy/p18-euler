@@ -8,6 +8,14 @@ Created on Sat Feb 15 16:10:46 2020
 
 class TriangleMaximum():
     
+    
+    class TriangleNode():
+        def __init__(self,num):
+            self.num = num
+            self.left = TriangleNode()
+            self.right = TriangleNode()
+    
+    
     def __init__(self):
         self.__tr_data__ = []
         
@@ -37,19 +45,49 @@ class TriangleMaximum():
                 self.__read_tr_line__(line)
                 
                 
-    def __get_next_left__(self,ind,inner_ind):
+    def __get_next_left__(self,row,column):
+        row += 1
         
-        if(ind >= len(self.__tr_data__)):
+        if(row >= len(self.__tr_data__)):
             return 0
         
-        return self.__tr_data__[ind][inner_ind]
+        if(column >= (len(self.__tr_data__[row]))):
+            return 0
+        
+        return self.__tr_data__[row][column]
     
-    def __get_next_right__(self,ind,inner_ind):
+    def __get_next_right__(self,row,column):
+        row += 1
         
-        if(ind >= len(self.__tr_data__)):
+        if(row >= len(self.__tr_data__)):
             return 0
         
-        return self.__tr_data__[ind][inner_ind+1]
+        column += 1 # right index
+        if(column >= (len(self.__tr_data__[row]))):
+            return 0
+        
+        return self.__tr_data__[row][column]
+    
+        
+    
+    def __get_poss_sums__(self,row, column, depth, sums):
+        sum_ind_left = len(sums)-1
+        sum_ind_right = len(sums)
+        sums.append(sums[len(sums)-1])
+        
+        if(depth == 0):
+            return
+        
+        sums[sum_ind_left] += self.__get_next_left__(row,column)
+        sums[sum_ind_right] += self.__get_next_right__(row,column)
+                
+        
+        
+                        
+
+                
+                
+    
     
     def find_triangle_maximum(self):
         sum = 0
