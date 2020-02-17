@@ -28,7 +28,15 @@ class TestTriangleMaximum(unittest.TestCase):
         
     def test_find_triagnle_maximum(self):        
         ex = 23
-        self.assertEqual(ex, self.tm.find_triangle_maximum())
+        self.assertEqual(ex, self.tm.find_triangle_maximum(3))
+        
+    def test_get_all_sums(self):
+        ex = [20, 17, 19, 23, 16, 20, 22, 16]
+        sums = []
+        self.tm.__add_poss_sums__(sums,0,0,4)
+        self.assertEqual(ex, sums)
+        
+        
     
 
 

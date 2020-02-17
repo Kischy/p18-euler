@@ -17,12 +17,13 @@ print("Calculation started")
 tm = TM()
 tm.import_triangle("the_triangle.txt")
 
+answers = []
 
-for i in range(7,5,-1):
-    print(i)
+for depth in range(1,5):
+    answers.append(tm.find_triangle_maximum(depth=depth))
 
-the_answer = 0
 
+the_answer = max(answers)
 
 print("The answer to the " + str(problem_number) + "th problem of ProjectEuler.Net is:",the_answer)
 

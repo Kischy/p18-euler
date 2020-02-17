@@ -5,21 +5,16 @@ Created on Sat Feb 15 16:10:46 2020
 @author: kisch
 """
 
+from copy import deepcopy 
+
 
 class TriangleMaximum():
     
-    
-    class TriangleNode():
-        def __init__(self,num):
-            self.num = num
-            self.left = TriangleNode()
-            self.right = TriangleNode()
-    
-    
+
     def __init__(self):
         self.__tr_data__ = []
         
-    def __add_numbers_to_data(self,nums):
+    def __add_numbers_to_data__(self,nums):
         ind = len(self.__tr_data__)-1
                 
         for num in nums:
@@ -33,7 +28,7 @@ class TriangleMaximum():
             line = line[:-1]
             
         nums = line.split(" ")
-        self.__add_numbers_to_data(nums)        
+        self.__add_numbers_to_data__(nums)        
         
     
     def import_triangle(self,filename):
@@ -42,60 +37,59 @@ class TriangleMaximum():
         with open(filename,"r") as file:
             lines = file.readlines()
             for line in lines:
-                self.__read_tr_line__(line)
-                
-                
-    def __get_next_left__(self,row,column):
-        row += 1
-        
-        if(row >= len(self.__tr_data__)):
-            return 0
-        
-        if(column >= (len(self.__tr_data__[row]))):
-            return 0
-        
-        return self.__tr_data__[row][column]
-    
-    def __get_next_right__(self,row,column):
-        row += 1
-        
-        if(row >= len(self.__tr_data__)):
-            return 0
-        
-        column += 1 # right index
-        if(column >= (len(self.__tr_data__[row]))):
-            return 0
-        
-        return self.__tr_data__[row][column]
+                self.__read_tr_line__(line)            
     
         
     
-    def __get_poss_sums__(self,row, column, depth, sums):
-        sum_ind_left = len(sums)-1
-        sum_ind_right = len(sums)
-        sums.append(sums[len(sums)-1])
-        
+    def __add_poss_sums__(self, sums, row, column, depth):
         if(depth == 0):
             return
         
-        sums[sum_ind_left] += self.__get_next_left__(row,column)
-        sums[sum_ind_right] += self.__get_next_right__(row,column)
-                
+        if(row >= len(self.__tr_data__)):
+            return    
         
-        
-                        
-
-                
-                
-    
-    
-    def find_triangle_maximum(self):
-        sum = 0
-        sec_i = 0
-        
-        for i in range(len(self.__tr_data__)):
-            sec_i = self.__get_next_inner_ind__(i,sec_i)
-            sum += self.__tr_data__[i][sec_i]
+        if(len(sums) == 0):
+            sums.append(self.__tr_data__[row][column])
+            self.__add_poss_sums__(sums,row+1,column,depth-1)
+        else:
+            ind = len(sums)-1        
+            top_sum = deepcopy(sums[ind])
+            sums[ind] += self.__tr_data__[row][column] # add left value
+            self.__add_poss_sums__(sums, row+1, column, depth-1) #go left down
+            
+            sums.append(top_sum + self.__tr_data__[row][column+1]) # add right value and append 
+            self.__add_poss_sums__(sums, row+1, column+1, depth-1) # go right down
             
         
-        return sum
+    def __get_max_sum__(self, row, column, depth):
+        sums = []
+        self.__add_poss_sums__(sums, row, column, depth)        
+        
+        return max(sums)
+
+    def __get_sec_index_with_max_sum__(self,row, column, depth):
+        left_sum = self.__get_max_sum__(row, column, depth)             
+        right_sum = self.__get_max_sum__(row, column+1, depth)    
+        
+        if(left_sum >= right_sum):
+            return column
+        else:
+            return column+1               
+         
+    
+    def find_triangle_maximum(self, depth):
+        the_sum = 0
+        sec_i = 0
+        
+        for i in range(len(self.__tr_data__)-1):
+            the_sum += self.__tr_data__[i][sec_i]            
+            sec_i = self.__get_sec_index_with_max_sum__(i+1,sec_i,depth)
+            
+            
+        the_sum += self.__tr_data__[len(self.__tr_data__)-1][sec_i]            
+        
+        return the_sum
+    
+    
+    
+    
