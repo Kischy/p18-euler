@@ -19,8 +19,10 @@ tm.import_triangle("the_triangle.txt")
 
 answers = []
 
-for depth in range(1,5):
-    answers.append(tm.find_triangle_maximum(depth=depth))
+for depth in range(1,16):
+    val = tm.find_triangle_maximum(depth=depth)
+    answers.append(val)
+    print("Depth = ", depth, "\tSum = ", val)
 
 
 the_answer = max(answers)
